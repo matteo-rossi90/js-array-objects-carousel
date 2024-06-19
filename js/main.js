@@ -9,46 +9,52 @@ Al click dell’utente sulle frecce verso sinistra o destra, l’immagine attiva
 Milestone 2:
 Aggiungere il **ciclo infinito** del carosello. 
 Ovvero se la miniatura attiva è la prima e l’utente clicca la freccia verso destra, 
-la miniatura che deve attivarsi sarà l’ultima e viceversa per l’ultima miniatura se l’utente clicca la freccia verso sinistra.*/
+la miniatura che deve attivarsi sarà l’ultima e viceversa per l’ultima miniatura se l’utente clicca la freccia verso sinistra.
+
+BONUS 1:
+Aggiungere le thumbnails (sottoforma di miniatura) ed al click attivare l’immagine corrispondente.
+BONUS 2:
+Aggiungere funzionalità di autoplay: dopo un certo periodo di tempo (3 secondi) l’immagine attiva dovrà cambiare alla successiva.
+BONUS 3:
+Aggiungere bottoni di start/stop e di inversione del meccanismo di autoplay.*/
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//selezionare il contenitore dove saranno presenti le immagini
+
+//Selezionare il contenitore dove saranno presenti le immagini
 const container = document.getElementById("col-image");
 
-//creare array con le informazioni necessarie
-
+//Creare array con le informazioni necessarie
 const images = [
-    { 
-        "image": 'img/01.webp', 
-        "title": 'Marvel\'s Spiderman Miles Morale', 
-        "text": 'Experience the rise of Miles Morales as the new hero masters incredible, explosive new powers to become his own Spider-Man.', 
-    }, 
-    { 
-        "image": 'img/02.webp', 
-        "title": 'Ratchet & Clank: Rift Apart', 
-        "text": 'Go dimension-hopping with Ratchet and Clank as they take on an evil emperor from another reality.', 
-    }, 
-    { 
-        "image": 'img/03.webp', 
-        "title": 'Fortnite', 
-        "text": "Grab all of your friends and drop into Epic Games Fortnite, a massive 100 - player face - off that combines looting, crafting, shootouts and chaos.", 
-    }, 
-    { 
-        "image": 'img/04.webp', 
-        "title": 'Stray', 
-        "text": 'Lost, injured and alone, a stray cat must untangle an ancient mystery to escape a long-forgotten city', 
-    }, 
-    { 
-        "image": 'img/05.webp', 
-        "title": "Marvel's Avengers", 
-        "text": 'Marvel\'s Avengers is an epic, third-person, action-adventure game that combines an original, cinematic story with single-player and co-operative gameplay.', 
+    {
+        "image": 'img/01.webp',
+        "title": 'Marvel\'s Spiderman Miles Morale',
+        "text": 'Experience the rise of Miles Morales as the new hero masters incredible, explosive new powers to become his own Spider-Man.',
+    },
+    {
+        "image": 'img/02.webp',
+        "title": 'Ratchet & Clank: Rift Apart',
+        "text": 'Go dimension-hopping with Ratchet and Clank as they take on an evil emperor from another reality.',
+    },
+    {
+        "image": 'img/03.webp',
+        "title": 'Fortnite',
+        "text": "Grab all of your friends and drop into Epic Games Fortnite, a massive 100 - player face - off that combines looting, crafting, shootouts and chaos.",
+    },
+    {
+        "image": 'img/04.webp',
+        "title": 'Stray',
+        "text": 'Lost, injured and alone, a stray cat must untangle an ancient mystery to escape a long-forgotten city',
+    },
+    {
+        "image": 'img/05.webp',
+        "title": "Marvel's Avengers",
+        "text": 'Marvel\'s Avengers is an epic, third-person, action-adventure game that combines an original, cinematic story with single-player and co-operative gameplay.',
     }
 ];
 
-//estrarre gli oggetti dell'array
-images.forEach((element) =>{
+//Estrarre gli oggetti dell'array e creare gli elementi di markup per ogni oggetto
+images.forEach((element) => {
 
-    // Creare gli elementi di markup per ogni oggetto
     let itemImage = `
         <div class="image">
             <div class="text">
@@ -59,97 +65,80 @@ images.forEach((element) =>{
         </div>
     `;
 
-    // Inserire gli elementi nella pagina
+    //Inserisci gli elementi nella pagina
     container.innerHTML += itemImage;
+});
 
-}
-)
-
-//inserire tutti gli elementi di markup in base alla classe ".item"
-
+//Selezionare tutti gli elementi di markup con classe "image"
 const items = document.getElementsByClassName("image");
 
-//provare a inserire la classe ".active" per ogni singolo elemento
+//Inizializzare il primo elemento come attivo
 let activeItems = 0;
 items[activeItems].classList.add("active");
 
-//selezionare l'id del bottone che fa scorrere lo slider in alto
+//Selezionare i bottoni per far in modo che le immagini avanzino e retrocedano
 const nextButton = document.querySelector("#arrow-down");
-
-//selezionare l'id del bottone che fa scorrere lo slider in basso
 const prevButton = document.querySelector("#arrow-up");
 
-//creare un evento che permetta di avanzare le immagini al click
-nextButton.addEventListener('click',
-    function () {
+// Creare un evento che permetta di avanzare le immagini al click della freccia in alto
+nextButton.addEventListener('click', function () {
+    let newIndex = (activeItems + 1) % items.length;
+    updateActiveItem(newIndex);
+});
 
-        // Rimuovere la classe active dell'immagine precedente 
-        items[activeItems].classList.remove("active");
+//Creare un evento che permetta di retrocedere le immagini al click della freccia in basso
+prevButton.addEventListener('click', function () {
+    let newIndex = (activeItems - 1 + items.length) % items.length;
+    update(newIndex);
+});
 
-        // Incrementare il valore degli items e gestire i limiti
-        activeItems = (activeItems + 1) % items.length;
-
-        // Associare la classe active agli items
-        items[activeItems].classList.add("active");
-
-    }
-);
-
-//creare un evento che permetta di ritornare alle immagini cliccando sul pulsante in basso
-prevButton.addEventListener('click',
-    function () {
-
-        // Rimuovere la classe active dell'immagine precedente
-        items[activeItems].classList.remove("active");
-
-        // decrementare il valore degli items
-        activeItems = (activeItems - 1 + items.length) % items.length;
-
-        // Associare la classe active agli items
-        items[activeItems].classList.add("active");
-    }
-);
-
-// Selezionare gli elementi di markup che rappresentano le anteprime delle immagini
+//Selezionare il contenitore delle anteprime
 const thumbs = document.getElementById("thumbs");
 
-//estrapolare le anteprime
+//Estrarre le anteprime e creare gli elementi di markup per ogni oggetto
 images.forEach((element) => {
 
-    // Creare gli elementi di markup per ogni oggetto
     let thumbsImage = `
         <div class="image-thumbs">
             <img src="${element.image}" alt="${element.title}">
         </div>
     `;
 
-    // Inserire gli elementi nella pagina
+    //Inserisci gli elementi in pagina
     thumbs.innerHTML += thumbsImage;
+});
 
-}
-);
-
-//inserire tutti gli elementi di markup in base alla classe ".item"
-
+//Selezionare tutti gli elementi di markup con classe "image-thumbs"
 const boxThumbs = document.getElementsByClassName("image-thumbs");
 
-// Aggiungere evento di click su ciascuna anteprima
+//Inizializzare la prima miniatura come selezionata
+boxThumbs[activeItems].classList.add("selected");
+
+//Aggiungere evento di click su ciascuna anteprima
 Array.from(boxThumbs).forEach((thumb, index) => {
     
-    thumb.addEventListener('click', 
-        
-        function () {
-
-        // Rimuovere la classe active dell'immagine precedente
-        items[activeItems].classList.remove("active");
-
-        // Impostare l'elemento attivo all'indice cliccato
-        activeItems = index;
-
-        // Associare la classe active agli items
-        items[activeItems].classList.add("active");
+    thumb.addEventListener('click', function () {
+        update(index);
     });
 });
+
+//FUNZIONI//
+
+//Funzione per aggiornare l'immagine attiva e la miniatura selezionat
+function update(newIndex) {
+
+    //Rimuovere la classe active e selected dagli elementi correnti
+    items[activeItems].classList.remove("active");
+    boxThumbs[activeItems].classList.remove("selected");
+
+    //Aggiornare l'indice dell'elemento attivo
+    activeItems = newIndex;
+
+    //Aggiungere la classe active e selected ai nuovi elementi
+    items[activeItems].classList.add("active");
+    boxThumbs[activeItems].classList.add("selected");
+};
+
 
 
 
