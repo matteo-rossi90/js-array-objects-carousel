@@ -20,12 +20,19 @@ Aggiungere bottoni di start/stop e di inversione del meccanismo di autoplay.*/
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+//dichiarare una variabile che sarà associata all'autoplay dello slideshow
+let slideshowInterval;
+
 //Selezionare il contenitore dove saranno presenti le immagini
 const container = document.getElementById("col-image");
 
 //Selezionare i bottoni per far in modo che le immagini avanzino e retrocedano
 const nextButton = document.querySelector("#arrow-down");
 const prevButton = document.querySelector("#arrow-up");
+
+//selezionare i pulsanti per attivare e disattivare l'autoplay
+const startAutoplay = document.getElementById("btn-play");
+const stopAutoplay = document.getElementById("btn-stop");
 
 //Creare array con le informazioni necessarie
 const images = [
@@ -122,6 +129,24 @@ Array.from(boxThumbs).forEach((thumb, index) => {
     });
 });
 
+//creare un evento che permetta all'utente di attivare e disattivare lo slideshow automatico
+startAutoplay.addEventListener('click',
+
+    function(){
+        startSlideshow();
+    }
+);
+
+stopAutoplay.addEventListener('click',
+
+    function () {
+        stopSlideshow();
+    }
+);
+
+//Iniziare lo slideshow automatico
+startSlideshow();
+
 //FUNZIONI//
 
 //Funzione per aggiornare l'immagine attiva e la miniatura selezionat
@@ -138,6 +163,18 @@ function update(newIndex) {
     items[activeItems].classList.add("active");
     boxThumbs[activeItems].classList.add("selected");
 };
+
+//Funzione per lo slideshow automatico
+function startSlideshow() {
+    slideshowInterval = setInterval(function () {
+        let newIndex = (activeItems + 1) % items.length;
+        update(newIndex);
+    }, 3000); // Cambia immagine ogni 3 secondi
+}
+
+function stopSlideshow() {
+    clearInterval(slideshowInterval);
+}
 
 
 
