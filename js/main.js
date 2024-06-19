@@ -83,7 +83,7 @@ const prevButton = document.querySelector("#arrow-up");
 // Creare un evento che permetta di avanzare le immagini al click della freccia in alto
 nextButton.addEventListener('click', function () {
     let newIndex = (activeItems + 1) % items.length;
-    updateActiveItem(newIndex);
+    update(newIndex);
 });
 
 //Creare un evento che permetta di retrocedere le immagini al click della freccia in basso
@@ -116,7 +116,7 @@ boxThumbs[activeItems].classList.add("selected");
 
 //Aggiungere evento di click su ciascuna anteprima
 Array.from(boxThumbs).forEach((thumb, index) => {
-    
+
     thumb.addEventListener('click', function () {
         update(index);
     });
