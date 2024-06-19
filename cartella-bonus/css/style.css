@@ -102,7 +102,7 @@ span{
 
 /* proprietà che si attiva al click delle anteprime */
 .selected{
-    border: 1px solid yellow;
+    border: 2px solid yellow;
 }
 
 /* proprietà frecce */
